@@ -23,45 +23,24 @@ jobs:
             [1]: https://github.com/peter-evans/create-or-update-comment
           reactions: '+1'
 
-  # comment-with-api:
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - name: Create comment with API
-  #       # here we are gonna use ghcli (github cli) instead of curl bcs it is shipped already on all runners and simplifies our life,
-  #       # handles parameters in a nicer way, we don't need to worry about authentication too much and etc.
-  #       run: | 
-  #         gh api -X POST \
-  #           http://api.github.com/repos/${ORGANIZATION}/${REPOSITORY}/issues/${ISSUE_NUMBER}/comments \
-  #           -f body='
-  #           Comment but from API call not action
-  #           '
-  #       # Here we need to pass additional variables bcs otherwise our ghcli won't work.
-  #       # If you ask why we pass these values when we add the comment with API call and we don't do so with adding comment using actions, that's bcs in actions it is managed automatically without our need to intervent and pass these values.
-  #       env:
-  #         # TODO: understand from where is it extracted? 
-  #         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  #         # These values are extracted from github context
-  #         ## If the repositroy is not created in organization
-  #         ORGANIZATION: ${{ github.event.repository.owner.login }}
-  #         ## If organization was created
-  #         # ORGANIZATION: ${{ github.event.organization.login }}
-  #         REPOSITORY: ${{ github.event.repository.name }}
-  #         ISSUE_NUMBER: ${{ github.event.issue.number }}
-
-
   comment-with-api:
     runs-on: ubuntu-latest
     steps:
       - name: Create comment with API
+        # here we are gonna use ghcli (github cli) instead of curl bcs it is shipped already on all runners and simplifies our life,
+        # handles parameters in a nicer way, we don't need to worry about authentication too much and etc.
         run: |
           gh api -X POST \
             https://api.github.com/repos/${ORGANIZATION}/${REPOSITORY}/issues/${ISSUE_NUMBER}/comments \
             -f body='
             Comment but from the API call not action
             '
+        # Here we need to pass additional variables bcs otherwise our ghcli won't work.
+        # If you ask why we pass these values when we add the comment with API call and we don't do so with adding comment using actions, that's bcs in actions it is managed automatically without our need to intervent and pass these values.
         env:
+          # TODO: understand from where is github token extracted? what is secrets? 
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          # ORGANIZATION: ${{ github.event.organization.login }}
-          ORGANIZATION: ${{ github.event.repository.owner.login }}
+          # ORGANIZATION: ${{ github.event.organization.login }}          # If repository is created within organization
+          ORGANIZATION: ${{ github.event.repository.owner.login }}        # If repository is created without organization
           REPOSITORY: ${{ github.event.repository.name }}
           ISSUE_NUMBER: ${{ github.event.issue.number }}
