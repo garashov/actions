@@ -31,7 +31,7 @@ jobs:
         # handles parameters in a nicer way, we don't need to worry about authentication too much and etc.
         run: | 
           gh api -X POST \
-            http://api.github.com/repo/${ORGANIZATION}/${REPOSITORY}/issues/${ISSUE_NUMBER}/comments \
+            http://api.github.com/repos/${ORGANIZATION}/${REPOSITORY}/issues/${ISSUE_NUMBER}/comments \
             -f body='
             Comment but from API call not action
             '
