@@ -6,6 +6,7 @@
     - Create
     - Close
     - Edit
+  - Scheduled runs
 2. Workflows -> Events are tight to workflows. Each workflow should have at least 1 job.
 3. Job -> Each workflow should have at least 1 job
 4. Runner -> Each job can be associated with a Runner. Runner is a machine or a compiuter engine or whatever that will perform designed steps. For example, if there are 2 jobs, they could be run on different runners in parallel or in sequence. The runners can be of 2 flavors:
