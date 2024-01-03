@@ -1,0 +1,30 @@
+name: Hello world workflow
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:                        # This is used for debugging purposes. It gives an opportunity to trigger the pipeline from UI with a button (without need to push and pull in this case)
+
+jobs:
+  # Job 1
+  hello:                                    # Job name
+    runs-on: ubuntu-latest                  # Runner of this job
+    steps:                                  # Defining the steps of the job
+      # Step 1: using github actions. 
+      - uses: actions/checkout@v2           # actions/checkout is github <owner>/<repository> while @v2 specifies the tag(version) of the reffered github action. Instead of version it is possbile to specify also the hash(id) of the release commit, for instance: @5a4ac90. Another way of refference is branch as well.
+      # Step 2: creating by yourself
+      - name: hello world
+        run: echo "Hello world"
+        shell: bash                         # Specifiying the shell that we want to use
+
+  # Job 2
+  goodbye:
+    runs-on: ubuntu-latest
+    steps:
+      - name: goodbye world
+        run: echo "Goodbye world"
+        shell: bash      
