@@ -41,6 +41,9 @@ jobs:
           # TODO: understand from where is it extracted? 
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           # These values are extracted from github context
-          ORGANIZATION: ${{ github.event.organization.login }}
+          ## If the repositroy is not created in organization
+          ORGANIZATION: ${{ github.event.repository.owner.login }}
+          ## If organization was created
+          # ORGANIZATION: ${{ github.event.organization.login }}
           REPOSITORY: ${{ github.event.repository.name }}
           ISSUE_NUMBER: ${{ github.event.issue.number }}
