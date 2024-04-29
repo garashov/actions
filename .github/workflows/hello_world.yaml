@@ -22,7 +22,7 @@ jobs:
         uses: actions/checkout@v2           # actions/checkout is github <owner>/<repository> while @v2 specifies the tag(version) of the reffered github action. Instead of version it is possbile to specify also the hash(id) of the release commit, for instance: @5a4ac90. Another way of refference is branch as well.
       # Step 2: creating by yourself
       - name: hello world
-        run: echo "Hello world"
+        run: echo "Hello world 2"
         shell: bash                         # Specifiying the shell that we want to use
 
   # Job 2
