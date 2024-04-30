@@ -16,8 +16,8 @@
 
 
 ### Accessing Environment Variables:
-${{github.event}} - GitHub Actions Expression Syntax -> is used to access and interpolate values from GitHub Actions context, such as event data, secrets, and workflow inputs. This syntax is specific to GitHub Actions and allows you to access dynamic values at runtime.
-"$VAR" - Shell Environment Variable Syntax -> this syntax is used to access the value of a shell environment variable.
+- ${{github.event}} - GitHub Actions Expression Syntax -> is used to access and interpolate values from GitHub Actions context, such as event data, secrets, and workflow inputs. This syntax is specific to GitHub Actions and allows you to access dynamic values at runtime.
+- "$VAR" - Shell Environment Variable Syntax -> this syntax is used to access the value of a shell environment variable.
 
 
 
