@@ -1,29 +1,29 @@
-name: Test workflow
+  name: Test workflow
 
-on:
-  push:
-    branches:
-      - main
-  pull_request:
-    branches:
-      - main
-  workflow_dispatch:
+  on:
+    push:
+      branches:
+        - main
+    pull_request:
+      branches:
+        - main
+    workflow_dispatch:
 
-jobs:
-  some_job_name:
-    runs-on: ubuntu-latest
-    steps:
-      # Step 1: Clone repo to runner using github actions.
-      - name: Checkout code
-        uses: actions/checkout@v2             # actions/checkout is github <owner>/<repository> while @v2 specifies the tag(version) of the reffered github action. Instead of version it is possbile to specify also the hash(id) of the release commit, for instance: @5a4ac90. Another way of refference is branch as well.
-      # Step 2: creating by yourself
-      - name: Run a script
-        run: echo "Hello World"
-        shell: bash
-      - name: Dump github context
-        # run: echo '${{ toJSON(github.event) }}' | jq
-        run: echo "${{TEST_VAR}}
-        shell: bash
-        env:
-          TEST_VAR: "test"    
+  jobs:
+    some_job_name:
+      runs-on: ubuntu-latest
+      steps:
+        # Step 1: Clone repo to runner using github actions.
+        - name: Checkout code
+          uses: actions/checkout@v2
+        # Step 2: creating by yourself
+        - name: Run a script
+          run: echo "Hello World"
+          shell: bash
+        - name: Dump github context
+          # run: echo '${{ toJSON(github.event) }}' | jq
+          run: echo "$TEST_VAR"
+          shell: bash
+          env:
+            TEST_VAR: "test"    
   

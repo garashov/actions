@@ -15,6 +15,12 @@
 5. Step -> Each job composed of 1 or multiple steps. They are run on Runner in a sequence and can't be run in parallel. Each step could be either an action or shell command (let's not confuse action here with github actions, action here means abstraction of the bunch of code that is designed to something)
 
 
+### Accessing Environment Variables:
+${{github.event}} - GitHub Actions Expression Syntax -> is used to access and interpolate values from GitHub Actions context, such as event data, secrets, and workflow inputs. This syntax is specific to GitHub Actions and allows you to access dynamic values at runtime.
+"$VAR" - Shell Environment Variable Syntax -> this syntax is used to access the value of a shell environment variable.
+
+
+
 ### Yaml Template:
 ```yaml
 name: Hello world workflow
