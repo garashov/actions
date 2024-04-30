@@ -20,8 +20,13 @@
         - name: Run a script
           run: echo "Hello World"
           shell: bash
+        # Step 3: Dump github context  
         - name: Dump github context
+          run: echo "${{ github.event }}"
           # run: echo '${{ toJSON(github.event) }}' | jq
+          shell: bash
+        # Step 4: Dump custom environment variable
+        - name: Dump custom environment variable
           run: echo "$TEST_VAR"
           shell: bash
           env:
