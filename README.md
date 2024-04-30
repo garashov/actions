@@ -35,7 +35,7 @@ on:
   # issues:
   #   types: [opened]
   # schedule:
-  #   - cron: "0 2 * * 1-5"
+  #   - cron: "0 2 * * 1-5"                 # Set your workflow to run every day of the week from Monday to Friday at 2:00 UTC
   workflow_dispatch:                        # This is used for debugging purposes. It gives an opportunity to trigger the pipeline from UI with a button (without need to push and pull in this case)
 
 jobs:
@@ -44,18 +44,19 @@ jobs:
     steps:
       # Step 1: Clone repo to runner using github actions.
       - name: Checkout code
-        uses: actions/checkout@v2             # actions/checkout is github <owner>/<repository> while @v2 specifies the tag(version) of the reffered github action. Instead of version it is possbile to specify also the hash(id) of the release commit, for instance: @5a4ac90. Another way of refference is branch as well.
+        uses: actions/checkout@v2           # actions/checkout is github <owner>/<repository> while @v2 specifies the tag(version) of the reffered github action. Instead of version it is possbile to specify also the hash(id) of the release commit, for instance: @5a4ac90. Another way of refference is branch as well.
       # Step 2: creating by yourself
       - name: Run a script
         run: echo "Hello World"
         shell: bash
+      # Step 3: Dump github context  
       - name: Dump github context
-        # run: echo '${{ toJSON(github.event) }}' | jq
-        run: echo "${{TEST_VAR}}
+        run: echo '${{ toJSON(github.event) }}' | jq
+        shell: bash
+      # Step 4: Dump custom environment variable
+      - name: Dump custom environment variable
+        run: echo "$TEST_VAR"
         shell: bash
         env:
-          TEST_VAR: "test"
-
-
-
+          TEST_VAR: "test"  
 ```
