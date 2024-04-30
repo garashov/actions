@@ -22,8 +22,7 @@
           shell: bash
         # Step 3: Dump github context  
         - name: Dump github context
-          run: echo "${{ github.event }}"
-          # run: echo '${{ toJSON(github.event) }}' | jq
+          run: echo '${{ toJSON(github.event) }}' | jq
           shell: bash
         # Step 4: Dump custom environment variable
         - name: Dump custom environment variable
