@@ -1,4 +1,5 @@
-name: Create a comment on an issue
+# Creates a comment on an issue
+name: 1.2 Trigger - issues
 
 on:
   issues:
