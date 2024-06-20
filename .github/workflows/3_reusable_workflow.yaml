@@ -1,0 +1,28 @@
+# In this workflow we have created reusable workflow that takes both input and secret
+name: Reusable Workflow
+
+on:
+  workflow_call:
+    inputs:
+      example_input:
+        description: 'An example input'
+        required: true
+        type: string
+      another_input:
+        required: false
+        default: "default value"
+        type: string
+    secrets:
+      example_secret:
+        required: true
+
+jobs:
+  example_job:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Print example input
+        run: echo "${{ inputs.example_input }}"
+      - name: Print another input
+        run: echo "${{ inputs.another_input }}"
+      - name: Use secret
+        run: echo "${{ secrets.example_secret }}"
