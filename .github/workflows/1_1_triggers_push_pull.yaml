@@ -1,5 +1,5 @@
-# This workflow is activated for each push that is done over main branch
-name: 1.1 Trigger - Push
+# This workflow is activated for each push or pull request that is done over main branch
+name: 1.1 Trigger - Push, Pull
 
 on:
   push:
