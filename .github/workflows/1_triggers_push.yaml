@@ -5,7 +5,10 @@ on:
   push:
     branches:
       - main
-  workflow_dispatch:                        # This is used for debugging purposes. It gives an opportunity to trigger the pipeline from UI with a button (without need to push and pull in this case)
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:                      # This is used for debugging purposes. It gives an opportunity to trigger the pipeline from UI with a button (without need to push and pull in this case)
 
 jobs:
   # Job 1
