@@ -1,5 +1,5 @@
 # In this workflow we have created reusable workflow that takes both input and secret
-name: Reusable Workflow
+name: 3 - Reusable Workflow
 
 on:
   workflow_call:
