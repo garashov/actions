@@ -43,10 +43,11 @@ jobs:
         
       # Using actions for retry logic
       - name: Lint code with action retry
-        uses: dev-drprasad/retry@v2
+        uses: nick-fields/retry@v3
         with:
           timeout_minutes: 1
           max_attempts: 3
+          shell: bash
           command: npm run lint
 
       - name: Check build status
