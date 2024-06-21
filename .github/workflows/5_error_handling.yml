@@ -1,0 +1,85 @@
+name: 5 - Error Handling
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+
+      - name: Install dependencies
+        run: npm install
+
+      # Implementing manually retry logic
+      - name: Run tests with manual retry logic
+        id: test
+        run: |
+          retry() {
+            local n=1
+            local max=3
+            local delay=5
+            while true; do
+              "$@" && break || {
+                if [[ $n -lt $max ]]; then
+                  ((n++))
+                  echo "Attempt $n/$max:"
+                  sleep $delay;
+                else
+                  echo "The command has failed after $n attempts."
+                  return 1
+                fi
+              }
+            done
+          }
+          retry npm test
+        
+      # Using actions for retry logic
+      - name: Lint code with action retry
+        uses: dev-drprasad/retry@v2
+        with:
+          timeout_minutes: 1
+          max_attempts: 3
+          command: npm run lint
+
+      - name: Check build status
+        if: failure()                       # checks if any preceding step has failed in current or previous jobs.
+        run: echo "Build or tests failed"
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Deploy application
+        id: deploy-step
+        run: ./deploy.sh
+        continue-on-error: true   #  allowing the workflow to proceed to the next job regardless of the deployment success.
+
+  # Run if deploy step is not succeded
+  handle-failure:
+    runs-on: ubuntu-latest
+    needs: deploy
+    if: ${{ needs.deploy.result == 'failure' }}
+    steps:
+      - name: Handle failure
+        run: echo "Deployment failed, running cleanup tasks"
+
+      - name: Send notification on failure
+        run: echo "Sending notification of failure"
+
+  # Run if deploy step succeded
+  deploy-success:
+    runs-on: ubuntu-latest
+    needs: deploy
+    if: github.ref == 'refs/heads/main' && needs.deploy.result == 'success'
+    # if: github.ref == 'refs/heads/main' && steps.test.conclusion == 'success'  # Reffering to outcome(id) of a step
+    steps:
+      - name: Deployed application
+        run: echo "Deployed application..."
