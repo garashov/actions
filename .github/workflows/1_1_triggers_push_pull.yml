@@ -15,10 +15,10 @@ jobs:
   hello:                                    # Job name
     runs-on: ubuntu-latest                  # Runner of this job
     steps:                                  # Defining the steps of the job
-      # Step 1: Clone repo to runner using github actions. 
+      # Step 1: Using Gtihub Actions: Clone repo to runner using github actions. 
       - name: Clone repo to runner 
         uses: actions/checkout@v2           # actions/checkout is github <owner>/<repository> while @v2 specifies the tag(version) of the reffered github action. Instead of version it is possbile to specify also the hash(id) of the release commit, for instance: @5a4ac90. Another way of refference is branch as well.
-      # Step 2: creating by yourself
-      - name: hello world
+      # Step 2: Print Hello World
+      - name: Print Hello World
         run: echo "Hello world"
         shell: bash                         # Specifiying the shell that we want to use
