@@ -1,4 +1,4 @@
-name: Release Workflow
+name: 1.2 Trigger - Tags
 
 on:
   push:
