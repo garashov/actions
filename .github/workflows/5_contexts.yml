@@ -1,0 +1,59 @@
+name: 5 - Contexts
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+
+jobs:
+  print-contexts:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+
+    steps:
+      - name: Print GitHub Context
+        run: |
+          echo "Repository is ${{ github.repository }}"
+          echo "Actor is ${{ github.actor }}"
+          echo "Event name is ${{ github.event_name }}"
+          echo "SHA is ${{ github.sha }}"
+          echo "Ref is ${{ github.ref }}"
+          echo "Head ref is ${{ github.head_ref }}"
+          echo "Base ref is ${{ github.base_ref }}"
+          echo "Github Event Context ${{ toJSON(github.event) }}" | jq
+
+      - name: Print Environment Variables
+        run: |
+          echo "Custom environment variable is ${{ env.MY_VAR }}"
+        env:
+          MY_VAR: "Actions"
+
+      - name: Print Job Context
+        run: |
+          echo "Job status is ${{ job.status }}"
+          echo "Job ID is ${{ job.id }}"
+          echo "Job name is ${{ job.name }}"
+
+      - name: Print Runner Context
+        run: |
+          echo "Runner OS is ${{ runner.os }}"
+          echo "Runner Temp Directory is ${{ runner.temp }}"
+
+      - name: Print Secrets Context
+        run: echo "My secret is ${{ secrets.MY_SECRET }}"
+
+      - name: Print Matrix Context
+        run: echo "Matrix OS is ${{ matrix.os }}"
+
+      - name: Generate Output
+        id: generate
+        run: echo "::set-output name=my_output::Hello, World!"
+      - name: Print Steps Context - Use Output from Previous Step
+        run: echo "Output from previous step is ${{ steps.generate.outputs.my_output }}"

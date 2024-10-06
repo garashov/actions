@@ -1,0 +1,43 @@
+name: 2 - Matrix Builds
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+
+jobs:
+  matrix-python-version:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [3.7, 3.8, 3.9, 3.10, 3.11] # Different versions of Python
+    steps:
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Print Python version
+        run: python --version
+  matrix-fail-fast:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false  # Disable fail-fast
+      matrix:
+        node: [12, 14, 16]
+
+    steps:
+      - name: Install Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node }}
+
+      - name: Run tests
+        run: |
+          if [ ${{ matrix.node }} == '14' ]; then exit 1; fi  # Simulate a failure for Node 14
+          echo "Running tests on Node.js ${{ matrix.node }}"

@@ -1,13 +1,8 @@
-# This workflow is activated for each push or pull request that is done over main branch
-name: 1.1 - Trigger - Push, Pull
+name: 1.4 - Trigger - Schedule
 
 on:
-  push:
-    branches:
-      - main
-  pull_request:
-    branches:
-      - main
+  schedule:
+    - cron: '0 0 * * *'
   workflow_dispatch:                      # This is used for debugging purposes. It gives an opportunity to trigger the pipeline from UI with a button (without need to push and pull in this case)
 
 
@@ -21,5 +16,7 @@ jobs:
         uses: actions/checkout@v2           # actions/checkout is github <owner>/<repository> while @v2 specifies the tag(version) of the reffered github action. Instead of version it is possbile to specify also the hash(id) of the release commit, for instance: @5a4ac90. Another way of refference is branch as well.
       # Step 2: Print Hello World
       - name: Print Hello World
-        run: echo "Hello world"
+        run: |
+          echo "Hello world"
+          echo "This pipeline got activated by schedule trigger"
         shell: bash                         # Specifiying the shell that we want to use

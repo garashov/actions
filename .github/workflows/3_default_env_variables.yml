@@ -1,0 +1,39 @@
+name: 3 - Default environment variables
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+
+jobs:
+  print-info:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Print Workflow Name
+        run: echo "Workflow name is $GITHUB_WORKFLOW"
+      - name: Print Run ID
+        run: echo "Run ID is $GITHUB_RUN_ID"
+      - name: Print Run Number
+        run: echo "Run number is $GITHUB_RUN_NUMBER"
+      - name: Print Repository
+        run: echo "Repository is $GITHUB_REPOSITORY"
+      - name: Print Actor
+        run: echo "Actor is $GITHUB_ACTOR"
+      - name: Print Event Name
+        run: echo "Event name is $GITHUB_EVENT_NAME"
+      - name: Print SHA
+        run: echo "SHA is $GITHUB_SHA"
+      - name: Print Ref
+        run: echo "Ref is $GITHUB_REF"
+      - name: Print Workspace
+        run: echo "Workspace is $GITHUB_WORKSPACE"
+      - name: Print Head and Base Ref
+        if: github.event_name == 'pull_request'
+        run: |
+          echo "Head ref is $GITHUB_HEAD_REF"
+          echo "Base ref is $GITHUB_BASE_REF"

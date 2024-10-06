@@ -1,9 +1,11 @@
-name: 1.2 Trigger - Tags
+name: 1.2 - Trigger - Tags
 
 on:
   push:
     tags:
       - 'v*.*.*'   # This will match any tags like v1.0.0, v2.3.4, etc.
+  workflow_dispatch:                      # This is used for debugging purposes. It gives an opportunity to trigger the pipeline from UI with a button (without need to push and pull in this case)
+
 
 jobs:
   release:

@@ -1,7 +1,6 @@
 # This workflow demonstrates the utilization of different levels of environmental variables and the usage of secrets.
 # It is activate on pull_requst and push to the main branch.
-
-name: 2 - Env and Secrets
+name: 4 - Custom environment variables
 
 on:
   push:
@@ -35,9 +34,3 @@ jobs:
         run: echo $STEP_ENV_VAR
         env:                                                  # Step level enviornmental variable            
           STEP_ENV_VAR: step_value
-
-      - name: Use secret API Key
-        run: echo ${{ secrets.API_KEY }}                      # Import secret defined in GitHub Secrets
-
-      - name: Dump github context
-        run: echo '${{ toJSON(github.event) }}' | jq
