@@ -27,7 +27,7 @@ jobs:
           echo "Ref is ${{ github.ref }}"
           echo "Head ref is ${{ github.head_ref }}"
           echo "Base ref is ${{ github.base_ref }}"
-          echo "Github Event Context ${{ toJSON(github.event) }}" | jq
+          echo "Github Event Context ${{ toJSON(github.event) }}"
 
       - name: Print Environment Variables
         run: |
