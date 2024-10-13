@@ -1,0 +1,50 @@
+name: 7 - Caching
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+
+      - name: Cache Python dependencies
+        id: cache-pip
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.cache/pip
+            **/venv
+          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
+            ${{ runner.os }}-
+
+      - if: ${{ steps.cache-pip.outputs.cache-hit != 'true' }}
+        name: List the installed packages
+        continue-on-error: true
+        run: pip list
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      # - name: Run build
+      #   run: python setup.py build
+
+      # - name: Run tests
+      #   run: pytest
