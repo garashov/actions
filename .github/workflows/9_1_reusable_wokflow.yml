@@ -1,0 +1,52 @@
+name: 9.1 - Reusable Workflows - Create GitHub Release
+
+on:
+  workflow_call:
+    inputs:
+      name:
+        description: 'The name of the release'
+        required: true
+        type: string
+      tag_name:
+        description: 'The tag associated with this release'
+        required: true
+        type: string
+      body:
+        description: 'The release notes/body content'
+        required: false
+        type: string
+
+jobs:
+  create-release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set default body if not provided
+        id: set-body
+        run: |
+          if [ -z "${{ inputs.body }}" ]; then
+            echo "body=Automatically generated release" >> $GITHUB_ENV
+          else
+            echo "body=${{ inputs.body }}" >> $GITHUB_ENV
+          fi
+
+      - name: Create Release
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const release = await github.rest.repos.createRelease({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              tag_name: '${{ inputs.tag_name }}',
+              name: '${{ inputs.name }}',
+              body: process.env.body,
+              draft: false,
+              prerelease: false
+            });
+            core.setOutput('release_url', release.data.html_url);
+
+      - name: Output Release URL
+        run: |
+          echo "Release URL: ${{ steps.create-release.outputs.release_url }}"

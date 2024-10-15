@@ -1,0 +1,13 @@
+name: 9.2 - Reusable Workflows - Create GitHub Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  call-reusable-workflow:
+    uses: ./.github/workflows/9_1_reusable_wokflow.yml
+    with:
+      name: Release  ${{ github.ref_name }}
+      tag_name: ${{ github.ref_name }}
