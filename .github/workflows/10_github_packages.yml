@@ -1,4 +1,4 @@
-name: 9.3 - Github Packages with GitHub Container Registry
+name: 10 - Github Packages with GitHub Container Registry
 on:
   release:
     types: [created]
