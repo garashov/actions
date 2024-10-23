@@ -1,0 +1,113 @@
+name: 12.1 - Workflow Commands - Inline
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+
+jobs:
+  debug:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Debug Information
+        run: |
+          echo "::debug::This is a debug message with useful information."
+
+
+  warning:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Simulate a Warning
+        run: |
+          echo "::warning::This is a warning message about the process."
+  
+
+  error:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Simulate an Error
+        run: |
+          echo "::error::An unexpected error occurred during the process."
+
+
+  notice:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Informative Message
+        run: |
+          echo "::notice::This is an informative message about the workflow execution."
+
+
+  add_mask:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Mask Sensitive Information
+        run: |
+          secret="my_secret_password"
+          echo "::add-mask::$secret"
+          echo "The secret is masked and won't be displayed in logs."
+
+      - name: Attempt to Reveal Secret
+        run: |
+          echo "Trying to output the secret..."
+          echo "Secret: $secret"  # This line will mask the output in the logs
+          echo "The secret should not be visible above."
+  
+
+  set_output:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Generate Random Number
+      id: generate_random_number
+      run: echo "::set-output name=random_number::$(($RANDOM % 100))"
+
+    - name: Print Random Number
+      run: echo "The random number is ${{ steps.generate_random_number.outputs.random_number }}"
+  
+
+  set_output_dynamic:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Decide Greeting
+      id: greeting
+      run: |
+        if [ "${{ github.event_name }}" == "push" ]; then
+          echo "::set-output name=greet::Hello, Push Event!"
+        else
+          echo "::set-output name=greet::Hello, Non-Push Event!"
+        fi
+
+    - name: Print Greeting
+      run: echo "${{ steps.greeting.outputs.greet }}"
+  
+
+  group_logs:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Multi-line Command
+        run: |
+          echo "::group::Multi-line Command Execution"
+          echo "Running first command..."
+          # Simulate command execution
+          sleep 1
+          echo "Running second command..."
+          # Simulate another command execution
+          sleep 1
+          echo "::endgroup::"
+  
+  stop_commands:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Disable workflow commands
+        run: |
+          echo '::warning:: This is a warning message, to demonstrate that commands are being processed.'
+          stopMarker=$(uuidgen)
+          echo "::stop-commands::$stopMarker"
+          echo '::warning:: This will NOT be rendered as a warning, because stop-commands has been invoked.'
+          echo "::$stopMarker::"
+          echo '::warning:: This is a warning again, because stop-commands has been turned off.'

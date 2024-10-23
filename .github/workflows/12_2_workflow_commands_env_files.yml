@@ -1,0 +1,69 @@
+name: 12.1 - Workflow Commands - Writing to Env Files
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+
+jobs:
+  set_env_vars:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set Environment Variables
+        run: |
+          echo "MY_VAR=Hello World" >> $GITHUB_ENV
+          echo "ANOTHER_VAR=GitHub Actions" >> $GITHUB_ENV
+
+      - name: Use Environment Variables
+        run: |
+          echo "MY_VAR is $MY_VAR"
+          echo "ANOTHER_VAR is $ANOTHER_VAR"
+
+  modify_sys_path:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Add Directory to PATH
+        run: echo "/my/custom/path" >> $GITHUB_PATH
+
+      - name: Check PATH
+        run: echo $PATH
+
+  set_output:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Generate Random Number
+        id: random_number
+        run: echo "random_number=$(($RANDOM % 100))" >> $GITHUB_OUTPUT
+
+      - name: Print Random Number
+        run: echo "The random number is ${{ steps.random_number.outputs.random_number }}"
+  
+  set_step_summary:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Write Step Summary
+        run: |
+          echo "## Workflow Summary" >> $GITHUB_STEP_SUMMARY
+          echo "- This step completed successfully." >> $GITHUB_STEP_SUMMARY
+          echo "- Total files processed: 42" >> $GITHUB_STEP_SUMMARY
+
+      - name: Display Summary
+        run: cat $GITHUB_STEP_SUMMARY
+  
+  combine_inline_envfile:
+    runs-on: ubuntu-latest
+    steps:
+      - id: sets-a-secret
+        name: Generate, mask, and output a secret
+        run: |
+          the_secret=$((RANDOM))
+          echo "::add-mask::$the_secret"
+          echo "secret-number=$the_secret" >> "$GITHUB_OUTPUT"
+      - name: Use that secret output (protected by a mask)
+        run: |
+          echo "the secret number is ${{ steps.sets-a-secret.outputs.secret-number }}"
